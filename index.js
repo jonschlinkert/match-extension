@@ -10,32 +10,93 @@
 var path = require('path');
 var minimatch = require('minimatch');
 
-var ensureDot = function(ext) {
+
+/**
+ * ## match(pattern, ext)
+ *
+ * Return `true` if `ext` matches the given `pattern`.
+ *
+ * **Example:**
+ *
+ * ```js
+ * matchExt(/\.md/, 'foo.md');
+ * //=> true
+ * ```
+ *
+ * @param  {String|Array|RegExp} `pattern` Can be a string, RegExp, or array of string patterns.
+ *                                         Glob patterns can be passed as a string.
+ * @param  {String} `ext` The extension to match against.
+ * @return {Boolean} `true` if the extension matches.
+ */
+
+var match = module.exports = function (pattern, ext) {
+  if (pattern instanceof RegExp) {
+    return pattern.test(ext);
+  } else if (Array.isArray(pattern)) {
+    pattern = match.normalizeArray(pattern);
+  } else if (typeof pattern === 'string') {
+    pattern = match.normalizeString(pattern);
+  } else {
+    throw new Error('Extension pattern must be an array, string or RegExp.');
+  }
+
+  ext = match.normalizeExt(ext);
+  return minimatch(ext, pattern, {
+    matchBase: true
+  });
+};
+
+
+/**
+ * ## .normalizeExt()
+ *
+ * Normalize file extension format to always have a
+ * leading dot.
+ *
+ * @param  {String} `ext`
+ * @return {String}
+ */
+
+match.normalizeExt = function(ext) {
+  if (/\\|\/|^\w+\./.test(ext)) {
+    ext = path.extname(ext);
+  }
   if (ext[0] !== '.') {
     ext = '.' + ext;
   }
   return ext;
 };
 
-module.exports = function matchExt(pattern, ext) {
-  if (/\\|\/|^\w+\./.test(ext)) {
-    ext = path.extname(ext);
-  }
 
-  var re;
-  if (pattern instanceof RegExp) {
-    return pattern.test(ext);
-  } else if (typeof pattern === 'string') {
-    re = minimatch.makeRe(pattern);
-  } else if (Array.isArray(pattern)) {
-    re = new RegExp('^\\.' + pattern.join('|'));
-  } else {
-    throw new Error('Extension pattern must be an array, string or regexp.');
-  }
-  re = new RegExp(re.source.replace(/(\\\.)/g, '$1?'));
+/**
+ * ## .normalizeArray()
+ *
+ * Convert arrays of strings to minimatch sets.
+ *
+ * @param  {Array} `pattern`
+ * @return {String}
+ */
 
-  // Don't do this before the RegExp test, since the results should
-  // be what is expected when regex is passed directly
-  ext = ensureDot(ext);
-  return re.test(ext);
+match.normalizeArray = function(pattern) {
+  return '.{' + pattern.join(',') + '}';
+};
+
+
+/**
+ * ## .normalizeString()
+ *
+ * Normalize string patterns to ensure that they
+ * lead with a dot, and if they end with a dot,
+ * add a trailing star.
+ *
+ * @param  {String} `pattern`
+ * @return {String}
+ */
+
+match.normalizeString = function(pattern) {
+  pattern = '.' + pattern.replace(/^\*|\./g, '');
+  if (/\.$/.test(pattern)) {
+    pattern = pattern + '*';
+  }
+  return pattern;
 };

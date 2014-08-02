@@ -21,13 +21,39 @@
     }
   ],
   "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
+    "array",
+    "check",
+    "dir",
+    "directory",
+    "exec",
+    "expression",
+    "ext",
+    "extension",
+    "extensions",
+    "extname",
+    "file",
+    "filepath",
+    "find",
+    "fs",
+    "glob",
+    "globstar",
+    "group",
+    "is",
+    "match",
+    "matches",
+    "minimatch",
+    "node",
+    "node.js",
+    "path",
+    "pattern",
+    "patterns",
+    "re",
+    "regex",
+    "regexp",
+    "regular",
+    "system",
+    "test",
+    "utils"
   ],
   "main": "index.js",
   "engines": {
@@ -39,7 +65,8 @@
   "devDependencies": {
     "mocha": "*",
     "should": "^4.0.4",
-    "verb": ">= 0.2.6"
+    "verb": ">= 0.2.6",
+    "verb-tag-jscomments": "^0.1.4"
   },
   "dependencies": {
     "minimatch": "^1.0.0"
