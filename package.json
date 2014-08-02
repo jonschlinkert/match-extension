@@ -1,0 +1,47 @@
+{
+  "name": "match-extension",
+  "description": "Return `true` if a file extension matches the given string, array of strings, or RegExp pattern.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/match-extension",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonschlinkert/match-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/match-extension/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/match-extension/blob/master/LICENSE-MIT"
+    }
+  ],
+  "keywords": [
+    "docs",
+    "documentation",
+    "generate",
+    "generator",
+    "markdown",
+    "templates",
+    "verb"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "^4.0.4",
+    "verb": ">= 0.2.6"
+  },
+  "dependencies": {
+    "minimatch": "^1.0.0"
+  }
+}
