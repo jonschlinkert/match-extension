@@ -1,7 +1,7 @@
 {
   "name": "match-extension",
   "description": "Return `true` if a file extension matches the given string, array of strings, or RegExp pattern.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/match-extension",
   "author": {
     "name": "Jon Schlinkert",
@@ -66,7 +66,7 @@
     "mocha": "*",
     "should": "^4.0.4",
     "verb": ">= 0.2.6",
-    "verb-tag-jscomments": "^0.1.4"
+    "verb-tag-jscomments": "^0.2.2"
   },
   "dependencies": {
     "minimatch": "^1.0.0"

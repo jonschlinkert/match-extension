@@ -7,13 +7,15 @@
 
 'use strict';
 
+/**
+ * Module dependencies
+ */
+
 var path = require('path');
 var minimatch = require('minimatch');
 
 
 /**
- * ## match(pattern, ext)
- *
  * Return `true` if `ext` matches the given `pattern`.
  *
  * **Example:**
@@ -27,9 +29,10 @@ var minimatch = require('minimatch');
  *                                         Glob patterns can be passed as a string.
  * @param  {String} `ext` The extension to match against.
  * @return {Boolean} `true` if the extension matches.
+ * @api public
  */
 
-var match = module.exports = function (pattern, ext) {
+function match(pattern, ext) {
   if (pattern instanceof RegExp) {
     return pattern.test(ext);
   } else if (Array.isArray(pattern)) {
@@ -41,24 +44,24 @@ var match = module.exports = function (pattern, ext) {
   }
 
   ext = match.normalizeExt(ext);
+
   return minimatch(ext, pattern, {
     matchBase: true
   });
-};
+}
 
 
 /**
- * ## .normalizeExt()
- *
  * Normalize file extension format to always have a
  * leading dot.
  *
- * @param  {String} `ext`
- * @return {String}
+ * @param  {String} `ext` The extension to normalize.
+ * @return {String} Extension _with_ a leading dot.
+ * @api public
  */
 
 match.normalizeExt = function(ext) {
-  if (/\\|\/|^\w+\./.test(ext)) {
+  if (/[\\\/^\w+]\./.test(ext)) {
     ext = path.extname(ext);
   }
   if (ext[0] !== '.') {
@@ -69,28 +72,29 @@ match.normalizeExt = function(ext) {
 
 
 /**
- * ## .normalizeArray()
+ * Strip the leading dot from an extension.
  *
- * Convert arrays of strings to minimatch sets.
- *
- * @param  {Array} `pattern`
- * @return {String}
+ * @param  {String} `ext` The extension to normalize.
+ * @return {String} Extenion _without_ a leading dot.
+ * @api public
  */
 
-match.normalizeArray = function(pattern) {
-  return '.{' + pattern.join(',') + '}';
+match.stripDot = function(ext) {
+  if (ext[0] === '.') {
+    ext = ext.slice(1);
+  }
+  return ext;
 };
 
 
 /**
- * ## .normalizeString()
- *
  * Normalize string patterns to ensure that they
  * lead with a dot, and if they end with a dot,
  * add a trailing star.
  *
- * @param  {String} `pattern`
- * @return {String}
+ * @param  {String} `pattern` The string pattern to normalize.
+ * @return {String} Normalized string.
+ * @api public
  */
 
 match.normalizeString = function(pattern) {
@@ -100,3 +104,27 @@ match.normalizeString = function(pattern) {
   }
   return pattern;
 };
+
+
+/**
+ * Convert arrays of strings to minimatch sets.
+ *
+ * @param  {Array} `pattern` Array of patterns to match.
+ * @return {String} A string to pass to minimatch.
+ * @api public
+ */
+
+match.normalizeArray = function(ext) {
+  ext = ext.map(match.stripDot);
+  if (ext.length > 1) {
+    ext = '{' + ext.join(',') + '}';
+  }
+  return '.' + ext;
+};
+
+
+/**
+ * Expose `match`
+ */
+
+module.exports = match;

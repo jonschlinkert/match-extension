@@ -107,8 +107,14 @@ describe('match extension', function () {
     });
   });
 
-  describe('when an array of string patterns is passed', function () {
+  describe('when an array of extensions _without dots_ is passed', function () {
     it('should return `true` when the extension matches.', function () {
+      matchExt(['a'], 'a/b/c.a').should.be.true;
+      matchExt(['a'], 'a').should.be.true;
+      matchExt(['b'], '.b').should.be.true;
+      matchExt(['a'], 'a/b/c.a').should.be.true;
+      matchExt(['a'], 'a.a').should.be.true;
+      matchExt(['b'], 'b').should.be.true;
       matchExt(['a', 'b'], 'a/b/c.a').should.be.true;
       matchExt(['b', 'a'], 'a').should.be.true;
       matchExt(['a', 'b'], '.b').should.be.true;
@@ -119,6 +125,27 @@ describe('match extension', function () {
 
     it('should return `false` when the extension does not match.', function () {
       matchExt(['a', 'b'], 'a/b/c.d').should.be.false;
+    });
+  });
+
+  describe('when an array of extensions _with leading dots_ is passed', function () {
+    it('should return `true` when the extension matches.', function () {
+      matchExt(['.a'], 'a/b/c.a').should.be.true;
+      matchExt(['.a'], 'a').should.be.true;
+      matchExt(['.b'], '.b').should.be.true;
+      matchExt(['.a'], 'a/b/c.a').should.be.true;
+      matchExt(['.a'], 'a.a').should.be.true;
+      matchExt(['.b'], 'b').should.be.true;
+      matchExt(['.a', '.b'], 'a/b/c.a').should.be.true;
+      matchExt(['.b', '.a'], 'a').should.be.true;
+      matchExt(['.a', '.b'], '.b').should.be.true;
+      matchExt(['.a', '.b'], 'a/b/c.a').should.be.true;
+      matchExt(['.b', '.a'], 'a.a').should.be.true;
+      matchExt(['.b', '.a'], 'b').should.be.true;
+    });
+
+    it('should return `false` when the extension does not match.', function () {
+      matchExt(['.a', 'b'], 'a/b/c.d').should.be.false;
     });
   });
 
