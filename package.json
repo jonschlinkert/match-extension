@@ -1,7 +1,7 @@
 {
   "name": "match-extension",
   "description": "Return `true` if a file extension matches the given string, array of strings, or RegExp pattern.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/jonschlinkert/match-extension",
   "author": {
     "name": "Jon Schlinkert",
